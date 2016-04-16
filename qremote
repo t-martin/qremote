@@ -1,1 +1,70 @@
-/home/tom/bin/qremote.sh
+#!/bin/bash
+
+usage() {
+cat << EOF
+qremote: connect to remote q process
+usage: qremote [-config /path/to/server/config.cfg] [-to TIMEOUT] [-c x y (CONSOLE WIDTH)] [-help]
+
+if no config file is specified, qremote will prompt for host/port/username
+
+a config file just contains
+ host=\${HOST}
+ port=\${PORT}
+ user=\${USER}
+EOF
+}
+
+if [[ -z $QREMOTE_HOME ]]; then 
+  QREMOTE_HOME=$(dirname $0)
+fi
+
+qfile=$QREMOTE_HOME/qremote.q
+if [[ ! -f $qfile ]]; then
+  echo 'Could not find qremote.q. qremote.q should be in the same directory as qremote.sh or else in $QREMOTE_HOME'
+  exit 1
+fi
+
+while true; do
+  case "$1" in
+    -config)
+      configfile=$2;
+      shift 2;;
+    -to)
+      params="$params -to $2";
+      shift 2;;
+    -c)
+      params="$params -c $2 $3";
+      shift 3;;
+    -h|-help)
+      usage;
+      exit 0;;
+    --|*)
+      shift;
+      break;;
+  esac
+done
+
+iterator=0
+if [[ -z $configfile ]]; then
+  read -p "host: " host
+  read -p "port: " port
+  read -p "user: " user
+  iterator=$((iterator+3))
+fi
+read -s -p "password: " password
+
+echo -en "\033[2K"
+for i in $(seq $iterator); do
+  echo -en "\033[1A"
+  echo -en "\033[2K"
+done
+echo -en "\r"
+
+rlrap=$(which rlwrap 2>/dev/null)
+
+[[ -n $configfile ]] && . $configfile
+
+: ${host:=localhost}
+
+$rlwrap q $qfile :$host:$port:$user:$password -q
+
