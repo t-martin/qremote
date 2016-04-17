@@ -60,7 +60,7 @@ for i in $(seq $iterator); do
 done
 echo -en "\r"
 
-rlrap=$(which rlwrap 2>/dev/null)
+rlwrap=$(which rlwrap 2>/dev/null)
 
 [[ -n $configfile ]] && . $configfile
 
