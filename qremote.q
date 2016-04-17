@@ -7,21 +7,22 @@ conndisplay:":"sv 3#":"vs string conn;
 connparams:$[`to in key opts;(conn;$[.z.k<3;"I";"J"]$first opts[`to]);conn];
 prompt:"q)";
 version:"1.0";
-program:"qremote";
+program:"[qremote]";
 usage:{[] -1"q ",string[.z.f]," <q-IPC-CONNECTION-STRING> [-to <IPC-TIMEOUT>] -c [<CONSOLE-WIDTH>]"};
+out:{-1 program," [",x,"]"};
 
 if[`help in key opts;usage[];exit 0];
 
-.z.pc:{[x] -2"[remote process closed...]";exit 1};
+.z.pc:{[x] out"remote process closed...";exit 1};
 
-footer:{[dur] -1"[","connection: ",conndisplay," || ","duration: ",dur,"ms","]";};
+footer:{[dur] out conndisplay," || ",dur,"ms";};
 
 connect:{[]
-  -1"[",program," v",version,"]";
-  -1"[",program," connecting to: ",conndisplay,"]";
-  h::@[hopen;connparams;{-2"[could not connect to ",conndisplay,". error: ",x,"]";exit 1}];
-  -1"[",program," connected to:  ",conndisplay,"]";
-  -1"[\\\\ to exit. 'exit 0' will kill remote process]\n";
+	out"v",version;
+	out"connecting to: ",conndisplay;
+	h::@[hopen;connparams;{out"could not connect to ",conndisplay,". error: ",x;exit 1}];
+	out"connected to:  ",conndisplay;
+	out"\\\\ to exit. 'exit 0' will kill remote process";-1"";
   };
 
 k)qsremote:{$[(::)~x;"";`/:$[10h=@r:@[.Q.S[y-2 1;0];x;::];,-3!x;r]]};
@@ -41,6 +42,6 @@ zpi:{[x]
   };
 .z.pi:{@[zpi;x;{-1"'",x;footer["0"];1 prompt}]};
 
-@[connect;();{-2"[",program," encountered an error: ",x,"]"; exit 1}];
+@[connect;();{out" encountered an error: ",x; exit 1}];
 
 1 prompt;  
