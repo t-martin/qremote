@@ -18,11 +18,11 @@ if[`help in key opts;usage[];exit 0];
 footer:{[dur] out conndisplay," || ",dur,"ms";};
 
 connect:{[]
-	out"v",version;
-	out"connecting to: ",conndisplay;
-	h::@[hopen;connparams;{out"could not connect to ",conndisplay,". error: ",x;exit 1}];
-	out"connected to:  ",conndisplay;
-	out"\\\\ to exit. 'exit 0' will kill remote process";-1"";
+  out"v",version;
+  out"connecting to: ",conndisplay;
+  h::@[hopen;connparams;{out"could not connect to ",conndisplay,". error: ",x;exit 1}];
+  out"connected to:  ",conndisplay;
+  out"\\\\ to exit. 'exit 0' will kill remote process";-1"";
   };
 
 k)qsremote:{$[(::)~x;"";`/:$[10h=@r:@[.Q.S[y-2 1;0];x;::];,-3!x;r]]};
@@ -35,9 +35,9 @@ zpi:{[x]
   if[x~"\\\\"; :exit 0];
   start:.z.t;
   res:$[x like "\\c*";.Q.s value x;h(qsremote[;system"c"]@value@;x)];
-	end:.z.t;
-	if[not ""~res;-1 trimn res];
-	footer[string `int$end-start];
+  end:.z.t;
+  if[not ""~res;-1 trimn res];
+  footer[string `int$end-start];
   1 prompt;
   };
 .z.pi:{@[zpi;x;{-1"'",x;footer["0"];1 prompt}]};
