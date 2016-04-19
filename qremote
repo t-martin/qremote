@@ -14,13 +14,14 @@ a config file just contains
 EOF
 }
 
-if [[ -z $QREMOTE_HOME ]]; then 
-  QREMOTE_HOME=$(dirname $0)
-fi
-
-qfile=$QREMOTE_HOME/qremote.q
-if [[ ! -f $qfile ]]; then
-  echo 'Could not find qremote.q. qremote.q should be in the same directory as qremote.sh or else in $QREMOTE_HOME'
+if [[ -f $QREMOTE_HOME/qremote.q ]]; then
+  qfile=$QREHOMTE_HOME/qremote.q
+elif [[ -f $QHOME/qremote.q ]]; then
+  qfile=$QHOME/qremote.q
+elif [[ -f $(dirname $0)/qremote.q ]]; then
+  qfile=$(dirname $0)/qremote.q
+else
+  echo 'Could not find qremote.q. qremote.q should be in $QREMOTE_HOME, $QHOME or the same directory as this script'
   exit 1
 fi
 

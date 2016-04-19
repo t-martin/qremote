@@ -5,9 +5,9 @@ qremote is a linux utility for q/kdb+ from kx systems
 it allows you to connect to remote kdb+ processes but behave as if you are using a local terminal
 
 ## install
-to install, simply download qremote and qremote.q and place them in the same directory. 
+to install, simply download qremote and qremote.q 
 
-alternatively, if you want to place qremote.q in a separate directory then just set QREMOTE_HOME to the directory containing the .q file before running qremote
+qremote will look for qremote.q first in $QREMOTE_HOME, then QHOME, and finally in the same directory as the script
 
 ## usage
 run qremote and it will prompt for a host/port/username/password
@@ -59,4 +59,10 @@ run qremote. it will prompt for server details
 	---
 	1 2
 	2 3
-	3 4 
+	3 4
+
+## integrationg with qmulti
+qremote is integrated with qmulti (https://github.com/t-martin/qmulti), a script which allows multi-line code to be entered in a kdb+ console. 
+
+if qmulti.q is stored in QHOME,QMULTI_HOME or QREMOTE_HOME, then it will be picked up by qremote and its functionality will be available.
+ 
