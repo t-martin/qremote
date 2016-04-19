@@ -13,8 +13,8 @@ out:{-1 program," [",x,"]"};
 
 if[`help in key opts;usage[];exit 0];
 
-{[x]
-  failed:1b;
+{[x]  
+  failed:`failed~@[system;"l qmulti.q";{`failed}];
   while[failed and count x; 
     failed:`failed~@[system;"l ",getenv[first x],"/qmulti.q";{`failed}];
     x:1_x;
@@ -31,7 +31,7 @@ connect:{[]
   out"connecting to: ",conndisplay;
   h::@[hopen;connparams;{out"could not connect to ",conndisplay,". error: ",x;exit 1}];
   out"connected to:  ",conndisplay;
-  if[checkforqmulti[];.priv.ml.initeval h;out"qmulti initialised for remote use"];
+  if[checkforqmulti[];.priv.ml.initremote h;out"qmulti initialised for remote use"];
   out"\\\\ to exit. 'exit 0' will kill remote process";-1"";};
 
 k)qsremote:{$[(::)~x;"";`/:$[10h=@r:@[.Q.S[y-2 1;0];x;::];,-3!x;r]]};
@@ -53,6 +53,6 @@ zpi:{[x]
 
 .z.pi:{@[zpi;x;{-1"'",x;footer["0"];1 prompt}]};
 
-@[connect;();{out" encountered an error: ",x; exit 1}];
+@[connect;();{out"encountered an error: ",x; exit 1}];
 
 1 prompt;  
