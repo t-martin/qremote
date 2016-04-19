@@ -61,7 +61,7 @@ run qremote. it will prompt for server details
 	2 3
 	3 4
 
-## integrationg with qmulti
+## integration with qmulti
 qremote is integrated with qmulti (https://github.com/t-martin/qmulti), a script which allows multi-line code to be entered in a kdb+ console. 
 
 if qmulti.q is stored in QHOME,QMULTI_HOME or QREMOTE_HOME, then it will be picked up by qremote and its functionality will be available.
