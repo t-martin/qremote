@@ -9,7 +9,7 @@ To install, simply download qremote and qremote.q
 
 qremote will look for qremote.q first in $QREMOTE_HOME, then QHOME, and finally in the same directory as the script
 
-## Usage
+## Usage 
 Run qremote and it will prompt for a host/port/username/password
 
 Each option can be skipped by pressing enter and nothing else
