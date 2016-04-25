@@ -67,5 +67,5 @@ rlwrap=$(which rlwrap 2>/dev/null)
 
 : ${host:=localhost}
 
-$rlwrap q $qfile :$host:$port:$user:$password -q
+$rlwrap q $qfile :$host:$port:$user:$password -q $params
 
