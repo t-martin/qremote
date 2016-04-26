@@ -20,38 +20,49 @@ if[`help in key opts;usage[];exit 0];
     x:1_x;
     ];
   }`QMULTI_HOME`QHOME`QREMOTE_HOME;
-checkforqmulti:{$[count key v:`.priv.ml.qmultiloaded;value v;0b]};
 
-.z.pc:{[x] out"remote process closed...";exit 1};
+{`qmultiloaded set $[count key v:`.priv.ml.qmultiloaded;value v;0b]}[];
 
-footer:{[dur] out conndisplay," || ",dur,"ms";};
+.z.pc:{[x] if[x=h;out"remote process closed...";exit 1]};
+
+footer:{[dur;rdur] out conndisplay," | total:",string[dur],"ms",$[null rdur;"";"//remote:",string[rdur],"ms//transfer:",string[dur-rdur],"ms"];};
 
 connect:{[]
   out"v",version;
   out"connecting to: ",conndisplay;
   h::@[hopen;connparams;{out"could not connect to ",conndisplay,". error: ",x;exit 1}];
   out"connected to:  ",conndisplay;
-  if[checkforqmulti[];.priv.ml.initremote h;out"qmulti initialised for remote use"];
+  if[qmultiloaded;.priv.ml.initremote h;out"qmulti initialised for remote use"];
   out"\\\\ to exit. 'exit 0' will kill remote process";-1"";};
 
 k)qsremote:{$[(::)~x;"";`/:$[10h=@r:@[.Q.S[y-2 1;0];x;::];,-3!x;r]]};
 k)rtrimn:{$[~t&77h>t:@x;.z.s'x;"\n"=last x;|ltrimn@|x;x]};
 k)ltrimn:{$[~t&77h>t:@x;.z.s'x;"\n"=*x;(+/&\"\n"=x)_x;x]};
 trimn:{ltrimn rtrimn x};
-localpatterns:enlist["\\c*"],$[checkforqmulti[];("multi[[]]*";"multi`*");()];
-
+localpatterns:enlist["\\c*"];
+multipatterns:("multi[[][]]";"multi`";enlist "m";"multi");
+evalR:{[h;x;qs] h({[qs;x] s:.z.t;r:qs value x;`r`d!(r;`int$.z.t-s)}qs;x)};
+evalL:{`r`d!(.Q.s value x;0N)};
+ 
 zpi:{[x]
   x:trimn trim x;
   if[x~"\\\\"; :exit 0];
   start:.z.t;
-  res:$[any x like/:localpatterns;.Q.s value x;h(qsremote[;system"c"]@value@;x)];
+  res:$[
+    qmultiloaded and any x like/:multipatterns;
+      `r`d!("";multi[]);
+    any x like/:localpatterns;
+      evalL x;
+      evalR[h;x;qsremote[;system"c"]]
+    ];
   end:.z.t;
+  remdur:res`d;res:res`r;
   if[not ""~res;-1 trimn res];
-  footer[string `int$end-start];
+  footer[`int$end-start;remdur];
   1 prompt;
   }
 
-.z.pi:{@[zpi;x;{-1"'",x;footer["0"];1 prompt}]};
+.z.pi:{@[zpi;x;{-1"'",x;footer[0;0N];1 prompt}]};
 
 @[connect;();{out"encountered an error: ",x; exit 1}];
 
