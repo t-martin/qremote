@@ -1,0 +1,79 @@
+#!/bin/bash
+
+usage() {
+cat << EOF
+qremote: connect to remote q process
+usage: qremote [-config /path/to/server/config.xml] [-connection connection_name] [-to TIMEOUT] [-c x y (CONSOLE WIDTH)] [-help]
+
+if no config file is specified, qremote will prompt for host/port/username
+
+EOF
+}
+
+if [[ -z $QREMOTE_HOME ]]; then
+  QREMOTE_HOME=$(dirname $0)/..
+fi
+
+qfile=$QREMOTE_HOME/q/qremote.q
+if [[ ! -f $qfile ]]; then
+  echo 'Could not find qremote.q. qremote.q should be in $QREMOTE/q or in the same directory as this script: $0'
+  exit 1
+fi
+while true; do
+  case "$1" in
+    -config)
+      configfile=$2;
+      shift 2;;
+    -connection)
+      connection=$2;
+      shift 2;;
+    -to)
+      params="$params -to $2";
+      shift 2;;
+    -c)
+      params="$params -c $2 $3";
+      shift 3;;
+    -h|-help)
+      usage;
+      exit 0;;
+    --|*)
+      shift;
+      break;;
+  esac
+done
+iterator=0
+if [[ -n $configfile && ! -f $configfile ]]; then
+  echo "$configfile: file not found"
+  exit 1
+fi
+
+if [[ -n $configfile && -n $connection ]]; then
+  config=($($QREMOTE_HOME/python/parse_config.py $configfile alias=$connection))
+  for line in ${config[@]}; do
+    eval $line
+  done
+fi
+
+if [[ -z $configfile || -z $connection ]]; then
+  read -p "host: " host
+  read -p "port: " port
+  read -p "user: " user
+  iterator=$((iterator+3))
+fi
+if [[ -z $password ]]; then
+  read -s -p "password: " password
+fi
+
+echo -en "\033[2K"
+for i in $(seq $iterator); do
+  echo -en "\033[1A"
+  echo -en "\033[2K"
+done
+echo -en "\r"
+
+rlwrap=$(which rlwrap 2>/dev/null)
+
+: ${host:=localhost}
+
+$rlwrap q $qfile :$host:$port:$user:$password -q $params
+

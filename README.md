@@ -1,26 +1,30 @@
 # qremote
 ## About
-qremote is a utility for q/kdb+ from kx systems.
+qremote is a utility for q/kdb+
 
 It allows you to connect to remote kdb+ processes but behave as if you are using a local terminal.
 
 ## Install
-To install, simply download qremote and qremote.q 
+Clone this repository.
 
-qremote will look for qremote.q first in $QREMOTE_HOME, then QHOME, and finally in the same directory as the script
+Define an environment variable QREMOTE_HOME which points to he base of this repository.
 
 ## Usage 
 Run qremote and it will prompt for a host/port/username/password
 
 Each option can be skipped by pressing enter and nothing else
 
-Alternatively you can specify a config file using -config
+Alternatively you can specify an xml config file using `-config` and a connection from that file
 
-The config file just contains
-
-	host=<host of remote process>
-	port=<port of remote process>
-	user=<username of remote user>
+The config file is of the format
+  <qremote>
+      <connection name="CONNECTION.NAME">
+      <host>my_host</host>
+      <port>1234</port>
+      <user>my_username</user>
+      <password>my_password</passwod>
+    </connection
+  </qremote>
 
 ## Example
 Start a qprocess on port 5001
@@ -33,11 +37,6 @@ Define some data
 
 Now use qremote to connect to the remote process
 
-qremote and qremote.q are in the same directory:
-
-	$ ls
-	qremote qremote.q
-
 Run qremote. It will prompt for server details
 	
 	$ ./qremote
@@ -46,7 +45,7 @@ Run qremote. It will prompt for server details
 	user:
 	password:
 	
-	[qremote v1.0]
+	[qremote v1.1]
 	[qremote connecting to: :localhost:5001]
 	[qremote connected to:  :localhost:5001]
 	[\\ to exit. 'exit 0' will kill remote process]
@@ -61,8 +60,39 @@ Run qremote. It will prompt for server details
 	2 3
 	3 4
 
+We could achieve the same result using a config file.
+  $ cat config/test.xml
+  <qremote> 
+    <connection name="TEST.CONN.A">
+      <host>localhost</host>
+      <port>5001</port>
+      <user>u</user>
+      <password>p</password>
+    </connection>
+    <connection name="TEST.CONN.B">
+      <host>localhost</host>
+      <port>6001</port>
+      <user>u</user>
+      <password>p</password>
+    </connection>  
+  </qremote>
+
+  $ qremote -config config/test.xml -connection TEST.CONN.A
+  [qremote v1.1]
+  [qremote connecting to: :localhost:5001]
+  [qremote connected to:  :localhost:5001]
+  [\\ to exit. 'exit 0' will kill remote process]
+
+  q)
+
 ## Integration with qmulti
-qremote is integrated with qmulti (https://github.com/t-martin/qmulti), a script which allows multi-line code to be entered in a kdb+ console. 
+qremote is integrated with [qmulti](https://github.com/t-martin/qmulti), a script which allows multi-line code to be entered in a kdb+ console. 
 
 If qmulti.q is stored in QHOME,QMULTI_HOME or QREMOTE_HOME, then it will be picked up by qremote and its functionality will be available.
- 
+
+## Color
+qremote will colorise the output of any executed commands using an adapted version of Michael Keenan's [color.q](https://github.com/mkeenan-kdb/color)
+
+![alt text](img/qremote-color.PNG?raw=true)
+
+Color schemes are configured in `csv/schemes.csv`. The colorscheme can be changed to color scheme `X` by typing `\scheme X`

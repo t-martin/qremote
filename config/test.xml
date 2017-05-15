@@ -1,0 +1,16 @@
+<qremote> 
+  <connection name="TEST.CONN.A">
+    <host>localhost</host>
+    <port>5001</port>
+    <user>u</user>
+    <password>p</password>
+  </connection>
+  <connection name="TEST.CONN.B">
+    <host>localhost</host>
+    <port>6001</port>
+    <user>u</user>
+    <password>p</password>
+  </connection>  
+</qremote>
+
+
