@@ -66,7 +66,7 @@
   };
 .color.colorise:{[x]
   raw:ssr[-1_x;"k)";".special.k "];
-  split:$[0b~split:.color.try2token[raw;0b];
+  split:$[0b~split:.color.try2token[raw;0b]; 
     raze -1_(.color.tokenise each "\n"vs raw),\:enlist"\n";
     split
     ];
@@ -90,7 +90,7 @@
   .color.NSPACE:.color.nsvars[];
   .color.KEYWORDS:string (.Q.res union 1_key .q) except `$.color.QSQL;
   .color.COLOR_CODES:"\033[",/:(!).("S*";",")0:hsym `$getenv[`QREMOTE_HOME],"/csv/colors.csv";
-  .color.krompt:"k)"sv .color.COLOR_CODES`KPROMPT`ENDC;
+  .color.KPROMPT:"k)"sv .color.COLOR_CODES`KPROMPT`ENDC;
   .color.load`qremote;
   .color.on[];
   };

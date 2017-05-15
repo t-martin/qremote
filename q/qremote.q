@@ -83,7 +83,7 @@ zpi:{[x]
     ];
   end:.z.t;
   remdur:res`d;res:res`r;
-  if[not ""~res;$[colorise;@[.color.colorise;res;{[x;y] -1 trimn res}res];-1 trimn res]];
+  if[not ""~res;$[colorise;@[.color.colorise;res;{[x;y] -1 trimn x}res];-1 trimn res]];
   footer[`int$end-start;remdur];
   1 prompt;
   }
