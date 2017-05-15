@@ -47,7 +47,7 @@
   };
 
 .color.try2token:{@[-4!;x;y]};
-.color.color4keyword:{first where (exec color!token from .color.TOKEN_MAP)~\:x};
+.color.color4keyword:{.color.TOKEN_MAP[x;`color]};
 .color.color4type:{@[x;where null x;:;{@[{.color.TYPE_MAP abs type parse x};x;`DEFAULT]}each y where null x]};
 .color.tagit:{$[y~".special.k";.color.KPROMPT;y sv .color.COLOR_CODES[x,`DEFAULT]]};
 .color.specialtag:{[clrs;splt;clr;str] $[all null id:where null clrs;clrs;@[clrs;where str~/:{@[first;x;0b]}each splt;:;clr]]};
