@@ -17,14 +17,15 @@ Each option can be skipped by pressing enter and nothing else
 Alternatively you can specify an xml config file using `-config` and a connection from that file
 
 The config file is of the format
-  <qremote>
+
+    <qremote>
       <connection name="CONNECTION.NAME">
-      <host>my_host</host>
-      <port>1234</port>
-      <user>my_username</user>
-      <password>my_password</passwod>
-    </connection
-  </qremote>
+        <host>my_host</host>
+        <port>1234</port>
+        <user>my_username</user>
+        <password>my_password</passwod>
+      </connection
+    </qremote>
 
 ## Example
 Start a qprocess on port 5001
@@ -61,29 +62,30 @@ Run qremote. It will prompt for server details
 	3 4
 
 We could achieve the same result using a config file.
-  $ cat config/test.xml
-  <qremote> 
-    <connection name="TEST.CONN.A">
-      <host>localhost</host>
-      <port>5001</port>
-      <user>u</user>
-      <password>p</password>
-    </connection>
-    <connection name="TEST.CONN.B">
-      <host>localhost</host>
-      <port>6001</port>
-      <user>u</user>
-      <password>p</password>
-    </connection>  
-  </qremote>
 
-  $ qremote -config config/test.xml -connection TEST.CONN.A
-  [qremote v1.1]
-  [qremote connecting to: :localhost:5001]
-  [qremote connected to:  :localhost:5001]
-  [\\ to exit. 'exit 0' will kill remote process]
+    $ cat config/test.xml
+    <qremote> 
+      <connection name="TEST.CONN.A">
+        <host>localhost</host>
+        <port>5001</port>
+        <user>u</user>
+        <password>p</password>
+      </connection>
+      <connection name="TEST.CONN.B">
+        <host>localhost</host>
+        <port>6001</port>
+        <user>u</user>
+        <password>p</password>
+      </connection>  
+    </qremote>
 
-  q)
+    $ qremote -config config/test.xml -connection TEST.CONN.A
+    [qremote v1.1]
+    [qremote connecting to: :localhost:5001]
+    [qremote connected to:  :localhost:5001]
+    [\\ to exit. 'exit 0' will kill remote process]
+
+    q)
 
 ## Integration with qmulti
 qremote is integrated with [qmulti](https://github.com/t-martin/qmulti), a script which allows multi-line code to be entered in a kdb+ console. 
