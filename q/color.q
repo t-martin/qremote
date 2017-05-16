@@ -84,7 +84,12 @@
   @[.color.colorise;.Q.s r;{[x;y] 1 x;}.Q.s r];
   };
 
-.color.preview:{[] -1 {.color.tagit[x;string[x]," ", 2_y]}'[key .color.COLOR_CODES;value .color.COLOR_CODES];};
+.color.preview:{[x] 
+  -1@$[null x;
+    {.color.tagit[x;string[x]," -- ", 2_y]}'[key .color.COLOR_CODES;value .color.COLOR_CODES];
+    .color.tagit ./:flip (::;string)@'.color.schemes[x,`TYPE]
+    ];
+  };
   
 .color.init:{[]
   .color.NSPACE:.color.nsvars[];
