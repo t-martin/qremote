@@ -34,7 +34,8 @@ if[`help in key opts;usage[];exit 0];
 
 footer:{[dur;rdur]
   $[colorise;
-    out " | " sv (.color.tagit[`GREY_3]conndisplay;.color.tagit[`BROWN_1]string .z.z;.color.tagit[`GREEN_39;"total:",string[dur],"ms"],$[null rdur;"";"//",.color.tagit[`BLUE_24;"remote:",string[rdur],"ms"],"//",.color.tagit[`YELLOW_21;"transfer:",string[dur-rdur],"ms"]]);
+    //out " | " sv (.color.tagit[`GREY_3]conndisplay;.color.tagit[`BROWN_1]string .z.z;.color.tagit[`GREEN_39;"total:",string[dur],"ms"],$[null rdur;"";"//",.color.tagit[`BLUE_24;"remote:",string[rdur],"ms"],"//",.color.tagit[`YELLOW_21;"transfer:",string[dur-rdur],"ms"]]);
+    out " | " sv (.color.tagit[.color.scheme `TABLECHARS]conndisplay;.color.tagit[.color.scheme `DATETIME]string .z.z;.color.tagit[.color.scheme`NSPACE;"total:",string[dur],"ms"],$[null rdur;"";"//",.color.tagit[.color.scheme`INT;"remote:",string[rdur],"ms"],"//",.color.tagit[.color.scheme`QSQL;"transfer:",string[dur-rdur],"ms"]]);
     out " | " sv (conndisplay;string .z.z;"total:",string[dur],"ms",$[null rdur;"";"//remote:",string[rdur],"ms//transfer:",string[dur-rdur],"ms"])
     ]
   };
