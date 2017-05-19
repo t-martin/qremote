@@ -4,6 +4,7 @@
 .color.OPERATORS:enlist each "+*><.@#$%^&!_',\\=~?/";
 .color.SPLITS:enlist each "{([;:])}";
 .color.QSQL:("select";"delete";"update";"from";"where";"by");
+.color.DEFAULT_SCHEME:`qremote;
 .color.nsvars:{[]
   isNS:{if[not count key x;:0b];if[any x~/:``.;:1b];$[99h=type v:value x;(1#v)~enlist[`]!enlist(::);0b]};
   nsf:{[isNS;ns] if[not isNS ns;:`$()];$[any ns~``.;system"f ",string ns;` sv'ns,/:system"f ",string ns]}[isNS];
@@ -96,7 +97,7 @@
   .color.KEYWORDS:string (.Q.res union 1_key .q) except `$.color.QSQL;
   .color.COLOR_CODES:"\033[",/:(!).("S*";",")0:hsym `$getenv[`QREMOTE_HOME],"/csv/colors.csv";
   .color.KPROMPT:"k)"sv .color.COLOR_CODES`KPROMPT`ENDC;
-  .color.load`qremote;
+  @[.color.load;.color.DEFAULT_SCHEME^`$getenv`QCOLOR_SCHEME;{.color.load .color.DEFAULT_SCHEME}]
   .color.on[];
   };
 
