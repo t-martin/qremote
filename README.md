@@ -111,3 +111,7 @@ Color schemes are configured in `csv/schemes.csv`. The colorscheme can be change
 
 ![alt text](img/obsidian-scheme.PNG?raw=true)
 
+### solarized_light
+
+![alt text](img/solarized_light-scheme.PNG?raw=true)
+

@@ -41,7 +41,7 @@ footer:{[dur;rdur]
   
 connect:{[]
   connected:0b;
-  while[not connected and attempts>0;
+  while[not[connected] and attempts>0;
     out"connecting to: ",conndisplay;
     h::@[hopen;connparams;{out"could not connect to ",conndisplay,". error: ",x;()}];
     connected:"b"$count h;
