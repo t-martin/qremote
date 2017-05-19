@@ -67,7 +67,7 @@
 .color.colorise:{[x]
   raw:ssr[-1_x;"k)";".special.k "];
   split:$[0b~split:.color.try2token[raw;0b]; 
-    raze -1_(.color.tokenise each "\n"vs raw),\:enlist"\n";
+    raze (.color.tokenise each "\n"vs raw),\:enlist"\n";
     split
     ];
   colors:.color.color4keyword each split;

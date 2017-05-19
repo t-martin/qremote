@@ -98,3 +98,16 @@ qremote will colorise the output of any executed commands using an adapted versi
 ![alt text](img/qremote-color.PNG?raw=true)
 
 Color schemes are configured in `csv/schemes.csv`. The colorscheme can be changed to color scheme `X` by typing `\scheme X`
+
+### qremote
+
+![alt text](img.qremote-scheme.PNG?raw=true)
+
+### zenburn
+
+![alt text](img.zenburn-scheme.PNG?raw=true)
+
+### obsidian
+
+![alt text](img.obsidian-scheme.PNG?raw=true)
+
