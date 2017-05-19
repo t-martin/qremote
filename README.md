@@ -101,13 +101,13 @@ Color schemes are configured in `csv/schemes.csv`. The colorscheme can be change
 
 ### qremote
 
-![alt text](img.qremote-scheme.PNG?raw=true)
+![alt text](img/qremote-scheme.PNG?raw=true)
 
 ### zenburn
 
-![alt text](img.zenburn-scheme.PNG?raw=true)
+![alt text](img/zenburn-scheme.PNG?raw=true)
 
 ### obsidian
 
-![alt text](img.obsidian-scheme.PNG?raw=true)
+![alt text](img/obsidian-scheme.PNG?raw=true)
 
