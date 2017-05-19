@@ -1,4 +1,17 @@
 # qremote
+## Table of Contents
+- [About](#about)
+- [Install](#install)
+- [Usage](#usage)
+- [Example](#example)
+- [Integration with qmulti](#integration-with-qmulti)
+- [Color](#color)
+  - [Color schemes](#color-schemes)
+    - [qremote](#qremote-scheme)
+    - [zenburn](#zenburn)
+    - [obsidian](#obsidian)
+    - [solarized_light](#solarized_light)
+
 ## About
 qremote is a utility for q/kdb+
 
@@ -98,20 +111,20 @@ qremote will colorise the output of any executed commands using an adapted versi
 ![alt text](img/qremote-color.PNG?raw=true)
 
 Color schemes are configured in `csv/schemes.csv`. The colorscheme can be changed to color scheme `X` by typing `\scheme X`
-
-### qremote
+### Color schemes
+#### qremote <a name="qremote-scheme"></a>
 
 ![alt text](img/qremote-scheme.PNG?raw=true)
 
-### zenburn
+#### zenburn
 
 ![alt text](img/zenburn-scheme.PNG?raw=true)
 
-### obsidian
+#### obsidian
 
 ![alt text](img/obsidian-scheme.PNG?raw=true)
 
-### solarized_light
+#### solarized_light
 
 ![alt text](img/solarized_light-scheme.PNG?raw=true)
 
