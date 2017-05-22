@@ -92,12 +92,14 @@
     ];
   };
   
-.color.init:{[]
+.color.init:{[x]
+  if[x~(::);x:`];
   .color.NSPACE:.color.nsvars[];
   .color.KEYWORDS:string (.Q.res union 1_key .q) except `$.color.QSQL;
   .color.COLOR_CODES:"\033[",/:(!).("S*";",")0:hsym `$getenv[`QREMOTE_HOME],"/csv/colors.csv";
   .color.KPROMPT:"k)"sv .color.COLOR_CODES`KPROMPT`ENDC;
-  @[.color.load;.color.DEFAULT_SCHEME^`$getenv`QCOLOR_SCHEME;{.color.load .color.DEFAULT_SCHEME}]
+  scheme:.color.DEFAULT_SCHEME^(`$getenv`QCOLOR_SCHEME)^x;
+  @[.color.load;scheme;{.color.load .color.DEFAULT_SCHEME}]
   .color.on[];
   };
 
