@@ -5,11 +5,12 @@ opts:.Q.opt .z.x;
 conn:hsym`$.z.x 0;
 conndisplay:":"sv 3#":"vs string conn;
 connparams:$[`to in key opts;(conn;$[.z.k<3;"I";"J"]$first opts[`to]);conn];
+isquiet:any .z.X~\:"-q";
 prompt:"q)";
 version:"1.1";
 program:"[qremote]";
 usage:{[] -1"q ",string[.z.f]," <q-IPC-CONNECTION-STRING> [-to <IPC-TIMEOUT>] -c [<CONSOLE-WIDTH>]"};
-out:{-1 program," [",x,"]"};
+out:{-1 program," [",x,"]";};
 attempts:5;
 sleep:"10";
 colorise:0b;
@@ -53,8 +54,8 @@ connect:{[]
   out"connected to:  ",conndisplay;
   if[qmultiloaded;.priv.ml.initremote h;out"qmulti initialised for remote use"];
   out"\\\\ to exit. 'exit 0' will kill remote process";-1"";
-  if[colorise;.color.reloadnsvars[h]]
-  1 "\n",prompt
+  if[colorise;.color.reloadnsvars[h]];
+  if[isquiet;1 "\n",prompt];
   };
 
 k)qsremote:{$[(::)~x;"";`/:$[10h=@r:@[.Q.S[y-2 1;0];x;::];,-3!x;r]]};
@@ -83,14 +84,12 @@ zpi:{[x]
     ];
   end:.z.t;
   remdur:res`d;res:res`r;
-  if[not ""~res;$[colorise;@[.color.colorise;res;{[x;y] -1 trimn x}res];-1 trimn res]];
+ if[not ""~res;$[colorise;@[{.color.colorise ` sv ` vs x};res;{[x;y] -1 trimn x}res];-1 trimn res]];
   footer[`int$end-start;remdur];
-  1 prompt;
+  if[isquiet;1 prompt];
   }
 
 .z.pi:{@[zpi;x;{-1"'",x;footer[0;0N];1 prompt}]};
 
 out"v",version;
 @[connect;();{out"encountered an error: ",x; exit 1}];
-
-
