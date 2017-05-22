@@ -36,13 +36,13 @@
   19h; `TIME
   );
 
-.color.load:{[scheme]
+.color.load:{[schem]
   t:read0 hsym `$getenv[`QREMOTE_HOME],"/csv/schemes.csv";
   cc:count ","vs first t;
   .color.schemes:(cc#"S";enlist",")0:t;
-  if[not scheme in cols .color.schemes; 'string[scheme]," scheme not found"];
+  if[not schem in distinct .color.schemes`scheme; 'string[schem]," scheme not found"];
   .color.TOKEN_MAP:0#.color.TOKEN_MAP;
-  .color.scheme:(!). .color.schemes[`TYPE,scheme];
+  .color.scheme:exec dType!code from .color.schemes where scheme=schem;
   .color.TYPE_MAP:.color.scheme .color.TYPES;
   {.color.TOKEN_MAP,:flip `token`color!(.color x;.color.scheme x)} each `QSQL`OPERATORS`TABLECHARS`SPLITS`NSPACE`KEYWORDS;
   };
@@ -68,7 +68,7 @@
 .color.colorise:{[x]
   raw:ssr[-1_x;"k)";".special.k "];
   split:$[0b~split:.color.try2token[raw;0b]; 
-    raze (.color.tokenise each "\n"vs raw),\:enlist"\n";
+    -1_raze (.color.tokenise each "\n"vs raw),\:enlist"\n";
     split
     ];
   colors:.color.color4keyword each split;
@@ -88,7 +88,7 @@
 .color.preview:{[x] 
   -1@$[null x;
     {.color.tagit[x;string[x]," -- ", 2_y]}'[key .color.COLOR_CODES;value .color.COLOR_CODES];
-    .color.tagit ./:flip (::;string)@'.color.schemes[x,`TYPE]
+    .color.tagit ./:flip (::;string)@'exec (code;dType) from .color.schemes where scheme=x
     ];
   };
   
