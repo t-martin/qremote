@@ -9,7 +9,6 @@ isquiet:any .z.X~\:"-q";
 prompt:"q)";
 version:"1.1";
 program:"[qremote]";
-usage:{[] -1"q ",string[.z.f]," <q-IPC-CONNECTION-STRING> [-to <IPC-TIMEOUT>] -c [<CONSOLE-WIDTH>]"};
 out:{-1 program," [",x,"]";};
 attempts:5;
 sleep:"10";
@@ -17,6 +16,29 @@ colorise:0b;
 color_on:{colorise::1b};
 color_off:{colorise::0b};
 qmultiloaded:0b;
+
+usage:{[] -1 "
+  qremote.q:
+      connect to a remote kdb+ process
+
+  usage:
+      q qremote.q <q-IPC-CONNECTION-STRING> [-to <IPC-TIMEOUT>] [-c <CONSOLE-WIDTH>]
+
+  arguments:
+      [1]:      IPC connection of remote process i.e.
+                    :host:port
+                    :host:port:user
+                    :host:port:user:password
+  
+  options:
+      -to       timeout in ms
+
+      -c        console width as ROWS COLUMNS (e.g. -c 15 175)
+      
+      -help     print this help message
+  ";
+  };
+
 
 if[`help in key opts;usage[];exit 0];
 

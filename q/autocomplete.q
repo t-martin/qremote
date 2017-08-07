@@ -2,18 +2,24 @@
 opts:first each .Q.opt .z.x
 
 usage:{ -1" 
-  Generates an autocomplete dictionary file to be used with rlwrap
+  autocomplete.q: 
+       generate an kdb+ autocomplete dictionary file to be used with rlwrap
   
-  q autocomplete.q [-echo] [-connection h:p:u:pw] [-outputdir D] [-outputfile F]
+  usage: 
+       q autocomplete.q [-echo] [-connection h:p:u:pw] [-outputdir D] [-outputfile F]
  
   options:
-       -echo: echo the full path to the created dictionary file. To be used with -q to catch output inside shell scripts
-       -connection: used to generate dict from a remote q process. Takes IPC connection details (host/port/user/password) as argument
-       -outputdir: override the output directory where dictionary file is stored. If not specified, $HOME/.kdb-autocomplete/ will be used
-       -outputfile: if not specified, file is saved as $outputdir/kdb-autocomplete, otherwise saved as $outputdir/$outputfile
-       -help: print this message
+       -echo          echo the full path to the created dictionary file. To be used with -q to catch output inside shell scripts
+       
+       -connection    used to generate dict from a remote q process. Takes IPC connection details (host/port/user/password) as argument
+       
+       -outputdir     override the output directory where dictionary file is stored. If not specified, $HOME/.kdb-autocomplete/ will be used
+       
+       -outputfile    if not specified, file is saved as $outputdir/kdb-autocomplete, otherwise saved as $outputdir/$outputfile
+       
+       -help          print this help message
  
-  then:
+  rlwrap usage:
        rlwrap -c -f $outputdir/$outputfile q \"$@\"
   ";
   };
@@ -49,6 +55,6 @@ save_remote:{save_all h:hopen hsym `$opts`connection; hclose h};
 
 main:{[] $[`help in key opts;[usage[];exit 1]; `connection in key opts;save_remote[]; save_local[]]};
 
-@[main;();{-2 "Error generating autocomplete dictionary: ",x; exit 1}];
+@[main;();{-2 "Error generating autocomplete dictionary: ",x; usage[]; exit 1}];
 
 exit 0;
