@@ -1,12 +1,22 @@
-// Generates an autocomplete dictinoary file to be used with rlwrap
-// q autocomplete.q [-echo] [-connection h:p:u:pw] [-outputfile F]
-//   options:
-//      -echo: echo the full path to the created dictionary file. To be used with -q to catch output inside shell scripts
-//      -connection: used to generate dict from a remote q process. Takes IPC connection details (host/port/user/password) as argument
-//      -outputdir: override the output directory where dictionary file is stored. If not specified, $HOME/.kdb-autocomplete/ will be used
-//      -outputfile: if not specified, file is saved as $outputdir/kdb-autocomplete, otherwise saved as $outputdir/$outputfile
 
 opts:first each .Q.opt .z.x
+
+usage:{ -1" 
+  Generates an autocomplete dictinoary file to be used with rlwrap
+  
+  q autocomplete.q [-echo] [-connection h:p:u:pw] [-outputdir D] [-outputfile F]
+ 
+  options:
+       -echo: echo the full path to the created dictionary file. To be used with -q to catch output inside shell scripts
+       -connection: used to generate dict from a remote q process. Takes IPC connection details (host/port/user/password) as argument
+       -outputdir: override the output directory where dictionary file is stored. If not specified, $HOME/.kdb-autocomplete/ will be used
+       -outputfile: if not specified, file is saved as $outputdir/kdb-autocomplete, otherwise saved as $outputdir/$outputfile
+       -help: print this message
+ 
+  then:
+       rlwrap -c -f $outputdir/$outputfile q \"$@\"
+  ";
+  };
 
 get_ns_vars:{[]
   isNS:{if[not count key x;:0b];if[any x~/:``.;:1b];$[99h=type v:value x;(1#v)~enlist[`]!enlist(::);0b]};
@@ -37,7 +47,7 @@ save_local:{save_all 0}
 
 save_remote:{save_all h:hopen hsym `$opts`connection; hclose h};
 
-main:{[] $[`connection in key opts;save_remote[]; save_local[]]};
+main:{[] $[`help in key opts;[usage[];exit 1]; `connection in key opts;save_remote[]; save_local[]]};
 
 @[main;();{-2 "Error generating autocomplete dictionary: ",x; exit 1}];
 
