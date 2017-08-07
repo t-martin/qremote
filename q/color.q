@@ -66,7 +66,7 @@
   :split
   };
 .color.colorise:{[x]
-  raw:ssr[-1_x;"k)";".special.k "];
+  raw:ssr[-1_x;"k)";".special.k"];
   split:$[0b~split:.color.try2token[raw;0b]; 
     -1_raze (.color.tokenise each "\n"vs raw),\:enlist"\n";
     split

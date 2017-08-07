@@ -84,7 +84,7 @@ zpi:{[x]
     ];
   end:.z.t;
   remdur:res`d;res:res`r;
- if[not ""~res;$[colorise;@[{.color.colorise each (` vs x),\:"\n"};res;{[x;y] -1 trimn x}res];-1 trimn res]];
+  if[not ""~res;$[colorise;@[{.color.colorise each (` vs x),\:"\n"};res;{[x;y] -1 trimn x}res];-1 trimn res]];
   footer[`int$end-start;remdur];
   if[isquiet;1 prompt];
   }
