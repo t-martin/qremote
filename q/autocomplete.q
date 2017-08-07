@@ -2,7 +2,7 @@
 opts:first each .Q.opt .z.x
 
 usage:{ -1" 
-  Generates an autocomplete dictinoary file to be used with rlwrap
+  Generates an autocomplete dictionary file to be used with rlwrap
   
   q autocomplete.q [-echo] [-connection h:p:u:pw] [-outputdir D] [-outputfile F]
  
