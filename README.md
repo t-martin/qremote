@@ -40,6 +40,8 @@ The config file is of the format
       </connection
     </qremote>
 
+Autocompletion comes via `rlwrap`. Autocompletion dictionaries are compiled by qremote when connecting to a remote process and saved in `$HOME/.qremote-autocomplete`. See `q/autocomplete.q` for options.
+
 ## Example
 Start a qprocess on port 5001
 
