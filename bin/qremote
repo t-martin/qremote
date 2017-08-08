@@ -96,7 +96,7 @@ rlwrap=$(which rlwrap 2>/dev/null)
 : ${host:=localhost}
 
 if [[ $DO_AUTOCOMPLETE -eq 1 && -n $rlwrap ]]; then
-  if [[ -n $connection ]]; then filename=$connection; else filename="$host:$port"; fi
+  if [[ -n $connection ]]; then filename=$connection; else filename="$host.$port"; fi
   acdict=$(q $acqfile -q -echo -connection $host:$port:$user:$password -outputdir $HOME/.qremote-autocomplete -outputfile $filename 2>/dev/null)
   if [[ -n $acdict ]]; then rlwrap="$rlwrap -c -f $acdict"; fi
 fi
