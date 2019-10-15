@@ -10,7 +10,7 @@ usage:
     qremote [-config /path/to/server/config.xml] [-connection connection_name] [-to TIMEOUT] [-c x y (CONSOLE WIDTH)] [-help]
 
 options:
-    -config        XML configuration file containing connection details. If no config file is specified, qremote will prompt for host/port/username
+    -config        INI configuration file containing connection details. If no config file is specified, qremote will prompt for host/port/username
 
     -connection    which connection from configuration file to connect to
 
@@ -68,7 +68,7 @@ if [[ -n $configfile && ! -f $configfile ]]; then
 fi
 
 if [[ -n $configfile && -n $connection ]]; then
-  config=($($QREMOTE_HOME/python/parse_config.py $configfile alias=$connection))
+  config=($($QREMOTE_HOME/python/parse_config.py $configfile $connection))
   for line in ${config[@]}; do
     eval $line
   done
