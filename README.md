@@ -27,18 +27,16 @@ Run qremote and it will prompt for a host/port/username/password
 
 Each option can be skipped by pressing enter and nothing else
 
-Alternatively you can specify an xml config file using `-config` and a connection from that file
+Alternatively you can specify an ini config file using `-config` and a connection from that file
 
 The config file is of the format
 
-    <qremote>
-      <connection name="CONNECTION.NAME">
-        <host>my_host</host>
-        <port>1234</port>
-        <user>my_username</user>
-        <password>my_password</passwod>
-      </connection
-    </qremote>
+    
+    [CONNECTION.NAME]
+    host=my_host
+    port=1234
+    user=my_username
+    password=my_password       
 
 Autocompletion comes via `rlwrap`. Autocompletion dictionaries are compiled by qremote when connecting to a remote process and saved in `$HOME/.qremote-autocomplete`. See `q/autocomplete.q` for options.
 
@@ -78,23 +76,20 @@ Run qremote. It will prompt for server details
 
 We could achieve the same result using a config file.
 
-    $ cat config/test.xml
-    <qremote> 
-      <connection name="TEST.CONN.A">
-        <host>localhost</host>
-        <port>5001</port>
-        <user>u</user>
-        <password>p</password>
-      </connection>
-      <connection name="TEST.CONN.B">
-        <host>localhost</host>
-        <port>6001</port>
-        <user>u</user>
-        <password>p</password>
-      </connection>  
-    </qremote>
+    $ cat config/test.ini
+    [TEST.CONN.A]
+    host=localhost
+    port=5001
+    user=u
+    password=p
+  
+    [TEST.CONN.B]
+    host=localhost
+    port=6001
+    user=u
+    password=p
 
-    $ qremote -config config/test.xml -connection TEST.CONN.A
+    $ qremote -config config/test.ini -connection TEST.CONN.A
     [qremote v1.1]
     [qremote connecting to: :localhost:5001]
     [qremote connected to:  :localhost:5001]
