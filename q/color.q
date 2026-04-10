@@ -1,5 +1,6 @@
 .color.TOKEN_MAP:([token:()] color:());
 .color.TYPE_MAP:()!();
+.color.CURRENT_SCHEME:`;
 .color.TABLECHARS:enlist each "|-";
 .color.OPERATORS:enlist each "+*><.@#$%^&!_',\\=~?/";
 .color.SPLITS:enlist each "{([;:])}";
@@ -45,6 +46,7 @@
   .color.scheme:exec dType!code from .color.schemes where scheme=schem;
   .color.TYPE_MAP:.color.scheme .color.TYPES;
   {.color.TOKEN_MAP,:flip `token`color!(.color x;.color.scheme x)} each `QSQL`OPERATORS`TABLECHARS`SPLITS`NSPACE`KEYWORDS;
+  .color.CURRENT_SCHEME:schem
   };
 
 .color.try2token:{@[-4!;x;y]};

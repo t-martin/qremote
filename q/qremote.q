@@ -7,14 +7,15 @@ conndisplay:":"sv 3#":"vs string conn;
 connparams:$[`to in key opts;(conn;$[.z.k<3;"I";"J"]$first opts[`to]);conn];
 isquiet:any .z.X~\:"-q";
 prompt:"q)";
-version:"1.1";
-program:"[qremote]";
-out:{-1 program," [",x,"]";};
+version:"1.2";
+program:{$[colorise;"[",.color.tagit[.color.scheme`QSQL;"qremote"],"]";"[qremote]"]};
+out:{-1 program[]," [",$[colorise;.color.tagit[.color.scheme`INT;x];x],"]";};
 attempts:5;
 sleep:"10";
 colorise:0b;
 color_on:{colorise::1b};
 color_off:{colorise::0b};
+color:{colorise::x~`on}
 qmultiloaded:0b;
 
 usage:{[] -1 "
@@ -56,10 +57,18 @@ if[`help in key opts;usage[];exit 0];
 .z.pc:{[x] if[x=h;out"remote process closed. attempting reconnect";connect[]]};
 
 footer:{[dur;rdur]
-  $[colorise;
-    out " | " sv (.color.tagit[.color.scheme `TABLECHARS]conndisplay;.color.tagit[.color.scheme `DATETIME]string .z.z;.color.tagit[.color.scheme`NSPACE;"total:",string[dur],"ms"],$[null rdur;"";"//",.color.tagit[.color.scheme`INT;"remote:",string[rdur],"ms"],"//",.color.tagit[.color.scheme`QSQL;"transfer:",string[dur-rdur],"ms"]]);
-    out " | " sv (conndisplay;string .z.z;"total:",string[dur],"ms",$[null rdur;"";"//remote:",string[rdur],"ms//transfer:",string[dur-rdur],"ms"])
-    ]
+  tag:{$[colorise;.color.tagit[.color.scheme x;y];y]};
+  total:tag[`NSPACE] "total->",string[dur],"ms";
+  remote:tag[`INT] $[null rdur;"";"remote->",string[rdur],"ms"];
+  trans:tag[`QSQL] "transfer->",string[dur-rdur],"ms";
+  durstr:" "sv(total;remote;trans);
+  cd:tag[`TABLECHARS;conndisplay];
+  now:tag[`DATETIME;string .z.p];
+  out" | "sv(cd;now;durstr);
+ / $[colorise;
+  /  out " | " sv (.color.tagit[.color.scheme `TABLECHARS]conndisplay;.color.tagit[.color.scheme `DATETIME]string .z.z;.color.tagit[.color.scheme`NSPACE;"total:",string[dur],"ms"],$[null rdur;"";"//",.color.tagit[.color.scheme`INT;"remote:",string[rdur],"ms"],"//",.color.tagit[.color.scheme`QSQL;"transfer:",string[dur-rdur],"ms"]]);
+   / out " | " sv (conndisplay;string .z.z;"total:",string[dur],"ms",$[null rdur;"";"//remote:",string[rdur],"ms//transfer:",string[dur-rdur],"ms"])
+    /]
   };
   
 connect:{[]
@@ -80,12 +89,39 @@ connect:{[]
   if[isquiet;1 "\n",prompt];
   };
 
+showschemes:{[] -1 @[string s;where .color.CURRENT_SCHEME=s:asc distinct .color.schemes`scheme;{$[colorise;underline .color.tagit[.color.scheme`NSPACE;x];x]," *"}];}
+underline:{"\033[4m",x,"\033[0m"}
+resize:{[rs] 
+  rows:string $[null rs;first system"c";rs];
+  col:{last " "vs first x}system"stty size";
+  system"c ",rows," ",col
+  };
+
+help:{[]
+  f:{$[x;underline;(::)]$[colorise;.color.tagit[.color.scheme y;z];z]};
+  cmd:f[1b;`NSPACE];
+  head:f[1b;`SPLITS];
+  vr:f[0b;`BOOL];
+  bp:{"* ",x};
+  -1 (
+    head "Commands";
+    bp cmd["\\c"]," ",vr["X"], " ",vr["Y"]," \t\t| this sets the console width locally";
+    bp cmd["\\m"]," | ",cmd["\\multi"]," \t\t| turn on multiline input";
+    bp cmd["\\e"]," | ",cmd["\\end"]," | ",cmd["\\done"]," \t| turn off multiline input";
+    bp cmd["\\rl"]," ",vr["X"]," | ",cmd["\\runlocal"]," ",vr["X"]," \t| run X locally";
+    bp cmd["\\rs"]," ",vr["X"]," | ",cmd["\\resize"]," ",vr["X"]," \t| resize console to X rows (if not specifid, use current value). COLUMNS determined from stty size";
+    bp cmd["\\scheme"]," ",vr["X"]," \t\t| load colorscheme X";
+    bp cmd["\\schemes"]," \t\t| show available colorschemes";
+    bp cmd["\\color"]," [",vr["on"],"|",vr["off"],"] \t| enable/disable coloring of output";
+    bp cmd["\\help"]," \t\t display this message"
+    );
+  };
 k)qsremote:{$[(::)~x;"";`/:$[10h=@r:@[.Q.S[y-2 1;0];x;::];,-3!x;r]]};
 k)rtrimn:{$[~t&77h>t:@x;.z.s'x;"\n"=last x;|ltrimn@|x;x]};
 k)ltrimn:{$[~t&77h>t:@x;.z.s'x;"\n"=*x;(+/&\"\n"=x)_x;x]};
 trimn:{ltrimn rtrimn x};
-localpatterns:enlist["\\c*"];
-multipatterns:("multi[[][]]";"multi`";enlist "m";"multi");
+localpatterns:enlist["\\c *"];
+multipatterns:("multi[[][]]";"\\m";"\\multi");
 evalR:{[h;x;qs] h({[qs;x] s:.z.t;r:qs value x;`r`d!(r;`int$.z.t-s)}qs;x)};
 evalL:{`r`d!(.Q.s value x;0N)};
  
@@ -98,8 +134,22 @@ zpi:{[x]
       `r`d!("";multi[]);
     any x like/:localpatterns;
       evalL x;
+    x like "\\runlocal *";
+      evalL 9_x;  
     x like "\\rl *";
       evalL 3_x;
+    x like "\\color *";
+      evalL "color `",trim 6_x;
+    x like "\\schemes*";
+      evalL "showschemes[]";
+    (x like "\\rs") or x like "\\resize";
+      evalL "resize[]";
+    (x like "\\rs *") or x like "\\resize *";
+      evalL "resize ",last " "vs x;
+    x like "\\help";
+      evalL "help[]";
+    x like "\\c";
+      evalL "\\c";  
     colorise and x like "\\scheme *";
       evalL ".color.load `",trim 7_x;
       evalR[h;x;qsremote[;system"c"]]
