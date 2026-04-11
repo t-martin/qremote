@@ -34,7 +34,6 @@ if [[ ! -f $qfile ]]; then
 fi
 
 acqfile=$QREMOTE_HOME/q/autocomplete.q
-
 DO_AUTOCOMPLETE=1
 if [[ ! -f $acqfile ]]; then
   DO_AUTOCOMPLETE=0
@@ -92,15 +91,15 @@ for i in $(seq $iterator); do
 done
 echo -en "\r"
 
-rlw=$(which rlwrap 2>/dev/null)
+rlwrap=$(which rlwrap 2>/dev/null)
 
 : ${host:=localhost}
 
 if [[ $DO_AUTOCOMPLETE -eq 1 && -n $rlwrap ]]; then
   if [[ -n $connection ]]; then filename=$connection; else filename="$host.$port"; fi
   acdict=$(q $acqfile -q -echo -connection $host:$port:$user:$password -outputdir $HOME/.qremote-autocomplete -outputfile $filename 2>/dev/null)
-  if [[ -n $acdict ]]; then rlw="$rlwrap -c -f $acdict"; fi
+  if [[ -n $acdict ]]; then rlwrap="$rlwrap -c -f $acdict"; fi
 fi
 
-$rlw q $qfile :$host:$port:$user:$password -q $params
+$rlwrap q $qfile :$host:$port:$user:$password -q $params
 
